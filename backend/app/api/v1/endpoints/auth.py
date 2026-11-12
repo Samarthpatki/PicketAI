@@ -39,7 +39,7 @@ async def login(
     payload:UserLoginRequest,
     auth_service: Annotated[AuthService, Depends(get_auth_service)]
 ) -> TokenResponse : 
-    return await auth_service.authencticate_user(payload)
+    return await auth_service.authenticate_user(payload)
 
 
 
