@@ -14,7 +14,6 @@ from app.schemas.auth import (
 from app.services.auth_services import AuthService
 
 router = APIRouter(prefix="/auth",tags=["Authentication"])
-settings = settings()
 
 def get_auth_service() -> AuthService:
     db: AsyncDatabase = db_manager.get_database(settings.DATABASE_NAME)
@@ -32,7 +31,7 @@ async def register(
     return await auth_service.register_user(payload)
 
 @router.post(
-    "login",
+    "/login",
     response_model=TokenResponse,
     status_code= status.HTTP_200_OK
 )

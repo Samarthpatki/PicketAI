@@ -7,11 +7,10 @@ from app.api.v1.router import api_router
 from app.core.config import settings
 from app.db.session import db_manager
 
-settings = settings()
 
 @asynccontextmanager
 async def lifespan(app:FastAPI):
-    await db_manager.connect_to_database(settings.MONGODB_URL)
+    await db_manager.connect_to_database(settings.MONGODB_URI)
     yield
     await db_manager.close_database_connection()
 
@@ -22,6 +21,7 @@ app =  FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

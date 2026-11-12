@@ -43,7 +43,7 @@ class AuthService:
         user_doc = {
             "email" : normalized_email,
             "hashed_password" : hash_password(payload.password),
-            "full_name": payload.password
+            "full_name": payload.full_name
         }
 
         result = await self.collection.insert_one(user_doc)
@@ -54,7 +54,7 @@ class AuthService:
             email= payload.email
         )
     
-    async def authencticate_user(self, payload: UserLoginRequest) -> TokenResponse:
+    async def authenticate_user(self, payload: UserLoginRequest) -> TokenResponse:
         """
         1. Finds user by normalized email 
         2. Verifies password hash. 
@@ -69,7 +69,7 @@ class AuthService:
             raise HTTPException(
                 status_code = status.HTTP_401_UNAUTHORIZED,
                 detail = "Incorrect email or password",
-                headers= {"WWW-Authencticate":"Bearer"},
+                headers= {"WWW-Authenticate":"Bearer"},
             )
         access_token = create_access_token(subject=str(user["_id"]))
         return TokenResponse(access_token=access_token,token_type="bearer")
